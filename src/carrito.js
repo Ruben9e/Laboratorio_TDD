@@ -22,6 +22,16 @@ export class Carrito {
         }
     }
 
+    eliminar(nombre) {
+        const indice = this.productos.findIndex((producto) => producto.nombre === nombre);
+
+        if (indice === -1) {
+            throw new Error(`El producto "${nombre}" no está en el carrito`);
+        }
+
+        this.productos.splice(indice, 1);
+    }
+
     cantidadDeItems() {
         return this.productos.reduce((total, producto) => total + producto.cantidad, 0);
     }

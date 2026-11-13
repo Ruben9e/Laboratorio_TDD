@@ -65,4 +65,20 @@ describe('Carrito de compras', () => {
       assert.throws(() => carrito.agregar('Mouse', 50000, 1.5), /cantidad/);
     });
   });
+
+  describe('Iteración 5: eliminar productos', () => {
+    test('eliminar un producto lo quita del carrito', () => {
+      carrito.agregar('Mouse', 50000, 2);
+      carrito.agregar('Teclado', 120000, 1);
+
+      carrito.eliminar('Mouse');
+
+      assert.equal(carrito.cantidadDeItems(), 1);
+      assert.equal(carrito.subtotal(), 120000);
+    });
+
+    test('eliminar un producto que no existe lanza un error', () => {
+      assert.throws(() => carrito.eliminar('Monitor'), /no está en el carrito/);
+    });
+  });
 });
