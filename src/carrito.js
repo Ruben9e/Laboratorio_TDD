@@ -1,7 +1,14 @@
 // Laboratorio TDD: carrito de compras
+const IVA = 0.19;
+const CUPONES = {
+    DESC10: 0.1,
+    DESC20: 0.2
+};
+
 export class Carrito {
     constructor() {
         this.productos = [];
+        this.cupon = null;
     }
 
     agregar(nombre, precio, cantidad = 1) {
@@ -41,5 +48,29 @@ export class Carrito {
             (total, producto) => total + producto.precio * producto.cantidad,
             0
         );
+    }
+
+    aplicarCupon(codigo) {
+        if (!Object.hasOwn(CUPONES, codigo)) {
+            throw new Error(`El cupón "${codigo}" no es válido`);
+        }
+
+        this.cupon = codigo;
+    }
+
+    descuento() {
+        if (this.cupon === null) {
+            return 0;
+        }
+
+        return Math.round(this.subtotal() * CUPONES[this.cupon]);
+    }
+
+    iva() {
+        return Math.round((this.subtotal() - this.descuento()) * IVA);
+    }
+
+    total() {
+        return this.subtotal() - this.descuento() + this.iva();
     }
 }
